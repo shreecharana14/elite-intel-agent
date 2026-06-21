@@ -1,0 +1,11 @@
+# Elite Intel System Cron Schedule
+# Add this to your crontab: crontab -e
+
+# Run every 30 minutes (Monday-Friday, 7am-6pm)
+*/30 7-18 * * 1-5 cd /path/to/elite-intel-agent && python minimal/fetch_and_score.py >> logs/job.log 2>&1
+
+# Or run 24/7:
+# */30 * * * * cd /path/to/elite-intel-agent && python minimal/fetch_and_score.py >> logs/job.log 2>&1
+
+# Every 60 minutes (cost-optimized):
+# 0 * * * * cd /path/to/elite-intel-agent && python minimal/fetch_and_score.py >> logs/job.log 2>&1
