@@ -1,0 +1,171 @@
+# ============================================================
+# DATA SOURCES CONFIGURATION
+# Add/remove sources here without touching code
+# ============================================================
+
+rss_feeds:
+  # --- TIER 1: Highest Signal (Primary Sources) ---
+  tier1:
+    - name: "Reuters Technology"
+      url: "https://feeds.reuters.com/reuters/technologyNews"
+      domain: ["tech", "geopolitics"]
+      weight: 1.3
+
+    - name: "Financial Times"
+      url: "https://www.ft.com/rss/home"
+      domain: ["finance", "geopolitics"]
+      weight: 1.4
+
+    - name: "Bloomberg Technology"
+      url: "https://feeds.bloomberg.com/technology/news.rss"
+      domain: ["finance", "tech"]
+      weight: 1.4
+
+    - name: "MIT Technology Review"
+      url: "https://www.technologyreview.com/feed/"
+      domain: ["ai", "tech", "biotech"]
+      weight: 1.5
+
+    - name: "IEEE Spectrum"
+      url: "https://spectrum.ieee.org/feeds/feed.rss"
+      domain: ["tech", "quantum", "energy"]
+      weight: 1.5
+
+    - name: "arXiv AI"
+      url: "https://rss.arxiv.org/rss/cs.AI"
+      domain: ["ai"]
+      weight: 1.8
+
+    - name: "arXiv Quantum Physics"
+      url: "https://rss.arxiv.org/rss/quant-ph"
+      domain: ["quantum"]
+      weight: 1.7
+
+    - name: "SEC EDGAR Latest Filings"
+      url: "https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&type=8-K&dateb=&owner=include&count=20&output=atom"
+      domain: ["finance"]
+      weight: 2.0
+
+    - name: "Nature Biotechnology"
+      url: "https://www.nature.com/nbt.rss"
+      domain: ["biotech"]
+      weight: 1.7
+
+  # --- TIER 2: High Signal ---
+  tier2:
+    - name: "Hacker News Front Page"
+      url: "https://news.ycombinator.com/rss"
+      domain: ["tech", "ai"]
+      weight: 1.2
+
+    - name: "TechCrunch"
+      url: "https://techcrunch.com/feed/"
+      domain: ["tech", "finance"]
+      weight: 1.0
+
+    - name: "The Economist"
+      url: "https://www.economist.com/science-and-technology/rss.xml"
+      domain: ["geopolitics", "tech"]
+      weight: 1.3
+
+    - name: "Stratechery"
+      url: "https://stratechery.com/feed/"
+      domain: ["tech", "finance"]
+      weight: 1.6
+
+    - name: "Benedict Evans"
+      url: "https://www.ben-evans.com/benedictevans?format=rss"
+      domain: ["tech"]
+      weight: 1.5
+
+    - name: "NBER Working Papers"
+      url: "https://www.nber.org/rss/new_working_papers.xml"
+      domain: ["finance", "economics"]
+      weight: 1.6
+
+    - name: "RAND Corporation"
+      url: "https://www.rand.org/pubs/rss/all.xml"
+      domain: ["geopolitics", "defense"]
+      weight: 1.5
+
+    - name: "GitHub Trending"
+      url: "https://github.com/trending"
+      domain: ["ai", "tech"]
+      weight: 1.3
+      scrape: true
+
+reddit_subreddits:
+  - name: "r/MachineLearning"
+    subreddit: "MachineLearning"
+    domain: ["ai"]
+    min_score: 100
+    weight: 1.4
+
+  - name: "r/investing"
+    subreddit: "investing"
+    domain: ["finance"]
+    min_score: 500
+    weight: 1.2
+
+  - name: "r/geopolitics"
+    subreddit: "geopolitics"
+    domain: ["geopolitics"]
+    min_score: 200
+    weight: 1.3
+
+  - name: "r/Futurology"
+    subreddit: "Futurology"
+    domain: ["tech", "biotech"]
+    min_score: 1000
+    weight: 1.0
+
+  - name: "r/singularity"
+    subreddit: "singularity"
+    domain: ["ai"]
+    min_score: 300
+    weight: 1.1
+
+financial_signals:
+  insider_trading:
+    enabled: true
+    source: "https://www.sec.gov/cgi-bin/browse-edgar?action=getcurrent&type=4&dateb=&owner=include&count=40&output=atom"
+    threshold_value: 1000000  # Only flag $1M+ insider trades
+
+  institutional_filings:
+    enabled: true
+    filing_types: ["13F", "SC 13G", "SC 13D"]
+
+  vc_funding:
+    enabled: true
+    sources:
+      - "https://techcrunch.com/category/venture/feed/"
+      - "https://news.crunchbase.com/feed/"
+    min_amount_millions: 50
+
+patent_monitoring:
+  enabled: true
+  keywords:
+    - "artificial intelligence"
+    - "quantum computing"
+    - "gene editing"
+    - "fusion energy"
+    - "autonomous systems"
+    - "neural interface"
+  sources:
+    - name: "USPTO"
+      url: "https://developer.uspto.gov/api-catalog"
+    - name: "Google Patents"
+      rss: "https://patents.google.com/rss"
+
+regulatory_monitoring:
+  enabled: true
+  sources:
+    - name: "EU Official Journal"
+      url: "https://eur-lex.europa.eu/oj/direct-access.html?ojSeries=OJ_L"
+      domain: ["regulation"]
+    - name: "FTC Press Releases"
+      url: "https://www.ftc.gov/feeds/press-releases.xml"
+      domain: ["regulation", "finance"]
+    - name: "FDA Approvals"
+      url: "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml"
+      domain: ["biotech"]

@@ -1,0 +1,37 @@
+version: '3.9'
+
+services:
+  elite-intel-agent:
+    build: .
+    container_name: elite-intel-agent
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - ./data:/app/data
+      - ./config:/app/config
+      - ./logs:/app/logs
+    depends_on:
+      - chromadb
+    networks:
+      - intel-network
+    environment:
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8001
+
+  chromadb:
+    image: chromadb/chroma:latest
+    container_name: intel-chromadb
+    restart: unless-stopped
+    ports:
+      - "8001:8000"
+    volumes:
+      - chromadb_data:/chroma/chroma
+    networks:
+      - intel-network
+
+volumes:
+  chromadb_data:
+
+networks:
+  intel-network:
+    driver: bridge

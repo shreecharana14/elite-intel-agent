@@ -1,0 +1,77 @@
+# ============================================================
+# SIGNAL SCORING CONFIGURATION
+# These weights determine what the AI considers "elite signal"
+# They update automatically through the self-learning loop
+# ============================================================
+
+scoring_dimensions:
+  # Novelty: Has this information appeared before?
+  novelty:
+    weight: 0.25
+    description: "Is this truly new information?"
+    decay_hours: 48  # Information loses novelty after 48h
+
+  # Velocity: Is this trend accelerating?
+  velocity:
+    weight: 0.20
+    description: "Is the volume of related signals increasing rapidly?"
+    window_hours: 6
+
+  # Source Authority: How credible and elite is the source?
+  source_authority:
+    weight: 0.15
+    description: "Primary > Secondary > Tertiary sources"
+    tier_multipliers:
+      tier1: 1.5
+      tier2: 1.0
+      tier3: 0.6
+
+  # Actionability: Can you make a decision based on this?
+  actionability:
+    weight: 0.20
+    description: "Does this signal lead to a possible action?"
+    keywords:
+      high: ["acquisition", "merger", "patent", "filing", "approval", "ban", "launch", "breakthrough", "arrested", "indicted"]
+      medium: ["partnership", "investment", "research", "study", "report"]
+      low: ["opinion", "analysis", "comment", "speculation"]
+
+  # Cross-domain connection: Does this connect multiple domains?
+  cross_domain:
+    weight: 0.10
+    description: "Signals that bridge multiple domains score higher"
+    bonus_per_domain: 0.05
+
+  # Asymmetry: Is this known to less than 5% of your peer group?
+  asymmetry:
+    weight: 0.10
+    description: "Is this in mainstream media yet?"
+    mainstream_penalty: -0.3  # Penalize if already on CNN/BBC
+    mainstream_sources:
+      - "cnn.com"
+      - "bbc.com"
+      - "nytimes.com"
+      - "theguardian.com"
+
+thresholds:
+  minimum_to_store: 40        # Store anything above 40
+  minimum_for_brief: 65       # Include in brief above 65
+  immediate_alert: 88         # Send immediate alert above 88
+
+bias_categories:
+  # These adjust scoring based on your personal interest profile
+  # Values are loaded from user feedback and stored in SQLite
+  ai: 1.0
+  finance: 1.0
+  geopolitics: 1.0
+  biotech: 1.0
+  quantum: 1.0
+  energy: 1.0
+  crypto: 1.0
+  defense: 1.0
+
+self_learning:
+  feedback_learning_rate: 0.05     # How fast preferences update
+  positive_feedback_boost: 0.15    # Score boost when user likes
+  negative_feedback_penalty: -0.20 # Score penalty when user dislikes
+  ignore_penalty: -0.05            # Small penalty for being ignored
+  min_feedback_samples: 10         # Min samples before adapting
