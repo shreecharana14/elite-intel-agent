@@ -1,0 +1,14 @@
+# ELITE INTEL SYSTEM - 4x DAILY SCHEDULE
+# Run every 6 hours to catch decision-making signals
+# 
+# Why 4x/day?
+# - 00:00 UTC: Asia morning (overnight decisions)
+# - 06:00 UTC: US East Coast market open (announcements)
+# - 12:00 UTC: Europe mid-day (regulations, announcements)
+# - 18:00 UTC: US end-of-day (quarterly announcements)
+
+# Production schedule
+0 0,6,12,18 * * * cd /path/to/elite-intel-agent && python minimal/fetch_and_score_gemini.py >> logs/job.log 2>&1
+
+# Alternative: Weekdays only (M-F)
+# 0 0,6,12,18 * * 1-5 cd /path/to/elite-intel-agent && python minimal/fetch_and_score_gemini.py >> logs/job.log 2>&1
